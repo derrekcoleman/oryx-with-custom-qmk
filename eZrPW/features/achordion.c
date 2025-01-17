@@ -343,9 +343,17 @@ __attribute__((weak)) uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
   return 1000;
 }
 
-// By default, Shift and Ctrl mods are eager, and Alt and GUI are not.
 __attribute__((weak)) bool achordion_eager_mod(uint8_t mod) {
-  return (mod & (MOD_LALT | MOD_LGUI)) == 0;
+  switch (mod) {
+    case MOD_LCTL:
+    case MOD_LALT:
+    case MOD_LGUI:
+    case MOD_LSFT:
+      return true;  // Eagerly apply left hand home row mods.
+
+    default:
+      return false;
+  }
 }
 
 #ifdef ACHORDION_STREAK
