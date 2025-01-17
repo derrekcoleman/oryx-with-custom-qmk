@@ -1,6 +1,5 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
-#include "features/achordion.h"
 #define MOON_LED_LEVEL LED_LEVEL
 #define ML_SAFE_RANGE SAFE_RANGE
 
@@ -131,9 +130,6 @@ bool rgb_matrix_indicators_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  // Have achordion pre-process the input
-  if (!process_achordion(keycode, record)) { return false; }
-
   switch (keycode) {
 
     case RGB_SLD:
@@ -176,10 +172,6 @@ uint8_t dance_step(tap_dance_state_t *state) {
     return MORE_TAPS;
 }
 
-// For Achordion
-void housekeeping_task_user(void) {
-  achordion_task();
-}
 
 void on_dance_0(tap_dance_state_t *state, void *user_data);
 void dance_0_finished(tap_dance_state_t *state, void *user_data);
