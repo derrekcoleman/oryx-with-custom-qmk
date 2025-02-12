@@ -271,3 +271,29 @@ uint16_t achordion_streak_chord_timeout(
     return 240;  // A longer timeout otherwise.
   }
 }
+
+bool achordion_streak_continue(uint16_t keycode) {
+  // If mods other than shift or AltGr are held, don't continue the streak.
+  if (get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) return false;
+  // This function doesn't get called for holds, so convert to tap keycodes.
+  if (IS_QK_MOD_TAP(keycode)) {
+    keycode = QK_MOD_TAP_GET_TAP_KEYCODE(keycode);
+  }
+  if (IS_QK_LAYER_TAP(keycode)) {
+    keycode = QK_LAYER_TAP_GET_TAP_KEYCODE(keycode);
+  }
+  // Regular letters and punctuation continue the streak.
+  if (keycode >= KC_A && keycode <= KC_Z) return true;
+  switch (keycode) {
+    case KC_DOT:
+    case KC_COMMA:
+    case KC_QUOTE:
+    case KC_SPACE:
+    case KC_EXLM:  // !
+    case KC_QUES:  // ?
+    case KC_AT:    // @
+    case KC_DLR:   // $
+      return true;
+  }
+  return false;  // All other keys end the streak.
+}
