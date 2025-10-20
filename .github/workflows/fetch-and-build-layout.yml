@@ -74,7 +74,17 @@ jobs:
         run: |
           git fetch origin main
           git checkout -B main origin/main
-          git merge -Xignore-all-space oryx
+          # Always accept Oryx version to avoid conflicts, then apply customizations
+          git merge -Xtheirs --no-commit oryx || {
+            echo "Merge failed even with -Xtheirs strategy"
+            git merge --abort
+            exit 1
+          }
+          # Apply custom modifications (achordion integration)
+          ./scripts/apply-custom-qmk.sh
+          # Stage all changes and commit the merge
+          git add -A
+          git commit -m "Merge oryx branch with custom modifications"
           git push
 
       - name: Update QMK firmware submodule to latest version (${{ steps.download-layout-source.outputs.firmware_version }})
