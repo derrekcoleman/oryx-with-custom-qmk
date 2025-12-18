@@ -278,8 +278,10 @@ uint16_t achordion_streak_chord_timeout(
   uint8_t mod = mod_config(QK_MOD_TAP_GET_MODS(tap_hold_keycode));
   if ((mod & (MOD_LSFT | MOD_RSFT)) != 0) {
     return 0;  // Exclude left and right shift from typing streak.
+  } else if ((mod & (MOD_LGUI | MOD_RGUI | MOD_LALT | MOD_RALT)) != 0) {
+    return 200;  // Shorter timeout for command and option keys.
   } else {
-    return 400;  // Longer timeout for other mod-tap keys.
+    return 300;  // Longer timeout for other mod-tap keys.
   }
 }
 
