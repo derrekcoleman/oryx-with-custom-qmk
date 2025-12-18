@@ -84,7 +84,7 @@ jobs:
           ./scripts/apply-custom-qmk.sh
           # Stage all changes and commit the merge
           git add -A
-          git commit -m "Merge oryx branch with custom modifications"
+          git commit -m "Merge oryx branch with custom modifications" || echo "No merge changes needed"
           git push
 
       - name: Update QMK firmware submodule to latest version (${{ steps.download-layout-source.outputs.firmware_version }})
