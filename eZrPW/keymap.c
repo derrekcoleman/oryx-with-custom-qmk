@@ -274,13 +274,8 @@ uint16_t achordion_streak_chord_timeout(
     return 0;  // Disable streak detection on layer-tap keys.
   }
 
-  // Otherwise, tap_hold_keycode is a mod-tap key.
-  uint8_t mod = mod_config(QK_MOD_TAP_GET_MODS(tap_hold_keycode));
-  if ((mod & (MOD_LSFT | MOD_RSFT)) != 0) {
-    return 0;  // No streak timeout for Shift mod-tap keys. Default 100ms.
-  } else {
-    return 240;  // A longer timeout otherwise.
-  }
+  // All mod-tap keys respect typing streak
+  return 400;
 }
 
 bool achordion_streak_continue(uint16_t keycode) {
